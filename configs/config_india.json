@@ -1,0 +1,97 @@
+{
+    "name": "CAC",
+    "experim_name": "city_cac_deeplabv3+_resnet50_1over8_datalist0",
+    "dataset": "IndianPines",
+    "data_dir": "/home/xinlai/dataset/cityscapes",
+    "datalist": 0,
+    "gpu":0,
+    "n_gpu": 4,
+    "n_labeled_examples": 372,
+    "diff_lrs": true,
+    "ramp_up": 0.1,
+    "unsupervised_w": 30,
+    "ignore_index": 255,
+    "lr_scheduler": "Poly",
+    "use_weak_lables":false,
+    "weakly_loss_w": 0.4,
+    "pretrained": true,
+    "random_seed": 42,
+
+    "model":{
+        "type":"SSDGL",
+        "in_channels":200,
+        "num_classes":16,
+        "block_channels":[96, 128, 192,256],
+        "inner_dim":128,
+        "reduction_ratio":1.0,
+        "num_blocks":[1, 1, 1, 1]
+    },
+    "data":{
+        "train":{
+            "type":"NewIndianPinesLoader",
+            "training":true,
+            "num_workers":4,
+            "image_mat_path":"./IndianPines/Indian_pines_corrected.mat",
+            "gt_mat_path":"./IndianPines/Indian_pines_gt.mat",
+            "sample_percent":0.02,
+            
+            "batch_size":10,
+            "batch_size_new":50
+        
+        },
+        "test":{
+            "type":"NewIndianPinesLoader",
+            "training":false,
+            "num_workers":4,
+            "image_mat_path":"./IndianPines/Indian_pines_corrected.mat",
+            "gt_mat_path":"./IndianPines/Indian_pines_gt.mat",
+            "sample_percent":0.02,
+            "batch_size":10,
+            "batch_size_new":50        }
+    },
+    "optimizer":{
+        "type":"sgd",
+        
+        "momentum":0.9,
+        "weight_decay":0.001
+    },
+    "learning_rate":{
+        "type":"poly",
+        
+        "base_lr":0.005,
+        "power":0.8,
+        "max_iters":600
+    },
+    "train":{
+        "forward_times":1,
+        "epoch":200,
+        "eval_per_epoch":true,
+        "summary_grads":false,
+        "summary_weights":false,
+        "eval_after_train":true,
+        "resume_from_last":false
+    },
+    "test":{
+        "draw":{
+            "image_size":[145, 145],
+            "palette":[
+                255, 0, 0,
+                0, 255, 0,
+                0, 0, 255,
+                255, 255, 0,
+                0, 255, 255,
+                255, 0, 255,
+                192, 192, 192,
+                128, 128, 128,
+                128, 0, 0,
+                128, 128, 0,
+                0, 128, 0,
+                128, 0, 128,
+                0, 128, 128,
+                0, 0, 128,
+                255, 165, 0,
+                255, 215, 0
+            ]
+        }
+    }
+}
